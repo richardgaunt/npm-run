@@ -1,0 +1,17 @@
+{
+  "name": "npm-run",
+  "version": "1.0.0",
+  "description": "Interactive CLI tool to run npm scripts from package.json",
+  "main": "index.mjs",
+  "bin": {
+    "npm-run": "index.mjs"
+  },
+  "dependencies": {
+    "inquirer": "^8.2.4",
+    "inquirer-autocomplete-prompt": "^2.0.0",
+    "commander": "^9.3.0"
+  },
+  "keywords": ["npm", "scripts", "cli", "runner"],
+  "author": "",
+  "license": "MIT"
+}
