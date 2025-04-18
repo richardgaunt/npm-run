@@ -88,14 +88,22 @@ npm install
 # Run all tests
 npm test
 
+# Run only unit tests
+npm run test:unit
+
+# Run only integration tests
+npm run test:integration
+
 # Run specific test files
 node --experimental-vm-modules node_modules/jest/bin/jest.js tests/unit/package-parser.test.js
 ```
 
 The test suite includes:
 - Unit tests for package.json parsing and script filtering
+- Integration tests for script execution and user interaction
+- Test coverage reports
 
-**Note**: Integration tests are currently limited due to challenges with mocking ES modules in the test environment. Unit tests provide coverage for the core functionality.
+Tests are also automatically run on GitHub Actions for all pull requests and pushes to main.
 
 ## Troubleshooting
 

@@ -6,6 +6,18 @@ import child_process from 'child_process';
 import fs from 'fs';
 import inquirer from 'inquirer';
 
+// Mock the modules
+jest.mock('child_process', () => ({
+  spawn: jest.fn(() => ({
+    on: jest.fn()
+  }))
+}));
+
+jest.mock('inquirer', () => ({
+  prompt: jest.fn().mockResolvedValue({ scriptName: 'test' }),
+  registerPrompt: jest.fn()
+}));
+
 // Helpers for ES module testing
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -58,11 +70,13 @@ describe('Prompt Interaction', () => {
     process.cwd = () => '/test-dir';
     
     // Import the index module (this will execute it)
-    try {
-      await import('../../index.mjs');
-    } catch (e) {
-      // Expected to fail since we're in test environment
-    }
+    jest.isolateModules(async () => {
+      try {
+        await import('../../index.mjs');
+      } catch (e) {
+        // Expected to fail since we're in test environment
+      }
+    });
     
     // Verify the prompt was shown with correct options
     expect(promptStub).toHaveBeenCalled();
@@ -107,11 +121,13 @@ describe('Prompt Interaction', () => {
     }));
     
     // Import the index module (this will execute it)
-    try {
-      await import('../../index.mjs');
-    } catch (e) {
-      // Expected to fail since we're in test environment
-    }
+    jest.isolateModules(async () => {
+      try {
+        await import('../../index.mjs');
+      } catch (e) {
+        // Expected to fail since we're in test environment
+      }
+    });
     
     // Verify npm run was called with the selected script
     expect(consoleLogStub).toHaveBeenCalledWith('Running: npm run build');

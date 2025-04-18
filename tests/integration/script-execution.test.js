@@ -5,6 +5,13 @@ import { fileURLToPath } from 'url';
 import child_process from 'child_process';
 import fs from 'fs';
 
+// Mock child_process module
+jest.mock('child_process', () => ({
+  spawn: jest.fn(() => ({
+    on: jest.fn()
+  }))
+}));
+
 // Helpers for ES module testing
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -53,11 +60,13 @@ describe('Script Execution Integration', () => {
     process.cwd = () => '/test-dir';
     
     // Import the index module (this will execute it)
-    try {
-      await import('../../index.mjs');
-    } catch (e) {
-      // Expected to fail since we're in test environment
-    }
+    jest.isolateModules(async () => {
+      try {
+        await import('../../index.mjs');
+      } catch (e) {
+        // Expected to fail since we're in test environment
+      }
+    });
     
     expect(consoleErrorStub).toHaveBeenCalledWith('Error: No package.json found in the current directory.');
     expect(processExitStub).toHaveBeenCalledWith(1);
@@ -75,11 +84,13 @@ describe('Script Execution Integration', () => {
     process.cwd = () => '/test-dir';
     
     // Import the index module (this will execute it)
-    try {
-      await import('../../index.mjs');
-    } catch (e) {
-      // Expected to fail since we're in test environment
-    }
+    jest.isolateModules(async () => {
+      try {
+        await import('../../index.mjs');
+      } catch (e) {
+        // Expected to fail since we're in test environment
+      }
+    });
     
     expect(consoleErrorStub).toHaveBeenCalledWith(expect.stringMatching(/Error parsing package.json:/));
     expect(processExitStub).toHaveBeenCalledWith(1);
@@ -97,11 +108,13 @@ describe('Script Execution Integration', () => {
     process.cwd = () => '/test-dir';
     
     // Import the index module (this will execute it)
-    try {
-      await import('../../index.mjs');
-    } catch (e) {
-      // Expected to fail since we're in test environment
-    }
+    jest.isolateModules(async () => {
+      try {
+        await import('../../index.mjs');
+      } catch (e) {
+        // Expected to fail since we're in test environment
+      }
+    });
     
     expect(consoleLogStub).toHaveBeenCalledWith('No scripts found in package.json.');
     expect(processExitStub).toHaveBeenCalledWith(0);
