@@ -8,7 +8,6 @@ An interactive CLI tool for running npm scripts from your `package.json` files w
 - ✅ Autocomplete filtering for quick script selection
 - ✅ Works in any directory containing a package.json file
 - ✅ Simple and easy to use
-- ✅ Conveniently aliased as `npm_run` in your terminal
 
 ## Installation
 
