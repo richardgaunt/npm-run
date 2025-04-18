@@ -3,11 +3,15 @@
   "version": "1.0.0",
   "description": "Interactive CLI tool to run npm scripts from package.json",
   "main": "index.mjs",
+
+  "scripts": {
+    "lint": "eslint . --ext .mjs",
+    "lint:fix": "eslint . --ext .mjs --fix",
+    "lint:report": "eslint . --ext .mjs -f json -o eslint-report.json",
+    "test": "cross-env NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js"
+  },
   "bin": {
     "npm-run": "index.mjs"
-  },
-  "scripts": {
-    "test": "cross-env NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "dependencies": {
     "inquirer": "^8.2.4",
@@ -15,6 +19,10 @@
     "commander": "^9.3.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.24.0",
+    "eslint": "^9.24.0",
+    "eslint-plugin-n": "^17.17.0",
+    "globals": "^16.0.0",
     "@jest/globals": "^29.5.0",
     "cross-env": "^7.0.3",
     "jest": "^29.5.0",
