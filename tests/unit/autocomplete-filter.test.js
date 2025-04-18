@@ -1,3 +1,5 @@
+import { describe, it, expect } from '@jest/globals';
+
 // Function to test - extracted from index.mjs
 function filterScriptNames(scriptNames, input) {
   if (!input) {

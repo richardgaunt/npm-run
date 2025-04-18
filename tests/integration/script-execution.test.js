@@ -1,4 +1,4 @@
-import sinon from 'sinon';
+import { jest, describe, it, expect, beforeEach, afterEach } from '@jest/globals';
 import mockFs from 'mock-fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -22,25 +22,21 @@ describe('Script Execution Integration', () => {
     originalCwd = process.cwd;
     
     // Mock child_process.spawn
-    spawnStub = sinon.stub(child_process, 'spawn');
-    spawnStub.returns({
-      on: sinon.stub().yields(0) // Simulate successful exit
-    });
+    spawnStub = jest.spyOn(child_process, 'spawn').mockImplementation(() => ({
+      on: (event, callback) => callback(0) // Simulate successful exit
+    }));
     
     // Mock process.exit
-    processExitStub = sinon.stub(process, 'exit');
+    processExitStub = jest.spyOn(process, 'exit').mockImplementation(() => {});
     
     // Mock console methods
-    consoleLogStub = sinon.stub(console, 'log');
-    consoleErrorStub = sinon.stub(console, 'error');
+    consoleLogStub = jest.spyOn(console, 'log').mockImplementation(() => {});
+    consoleErrorStub = jest.spyOn(console, 'error').mockImplementation(() => {});
   });
 
   afterEach(() => {
     // Restore mocks
-    spawnStub.restore();
-    processExitStub.restore();
-    consoleLogStub.restore();
-    consoleErrorStub.restore();
+    jest.restoreAllMocks();
     mockFs.restore();
     
     // Restore original process.cwd
@@ -63,8 +59,8 @@ describe('Script Execution Integration', () => {
       // Expected to fail since we're in test environment
     }
     
-    expect(consoleErrorStub.calledWith('Error: No package.json found in the current directory.')).toBe(true);
-    expect(processExitStub.calledWith(1)).toBe(true);
+    expect(consoleErrorStub).toHaveBeenCalledWith('Error: No package.json found in the current directory.');
+    expect(processExitStub).toHaveBeenCalledWith(1);
   });
 
   it('should exit with error when package.json is invalid', async () => {
@@ -85,8 +81,8 @@ describe('Script Execution Integration', () => {
       // Expected to fail since we're in test environment
     }
     
-    expect(consoleErrorStub.calledWithMatch('Error parsing package.json:')).toBe(true);
-    expect(processExitStub.calledWith(1)).toBe(true);
+    expect(consoleErrorStub).toHaveBeenCalledWith(expect.stringMatching(/Error parsing package.json:/));
+    expect(processExitStub).toHaveBeenCalledWith(1);
   });
 
   it('should exit with message when no scripts are found', async () => {
@@ -107,11 +103,10 @@ describe('Script Execution Integration', () => {
       // Expected to fail since we're in test environment
     }
     
-    expect(consoleLogStub.calledWith('No scripts found in package.json.')).toBe(true);
-    expect(processExitStub.calledWith(0)).toBe(true);
+    expect(consoleLogStub).toHaveBeenCalledWith('No scripts found in package.json.');
+    expect(processExitStub).toHaveBeenCalledWith(0);
   });
 
   // Note: Testing the inquirer prompt functionality would require more complex mocking,
   // which is beyond the scope of this initial test implementation.
-  // We'll add a note about this in our README.
 });

@@ -1,4 +1,4 @@
-import sinon from 'sinon';
+import { jest, describe, it, expect, beforeEach, afterEach } from '@jest/globals';
 import mockFs from 'mock-fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -23,27 +23,23 @@ describe('Prompt Interaction', () => {
     originalCwd = process.cwd;
     
     // Mock inquirer.prompt
-    promptStub = sinon.stub(inquirer, 'prompt');
+    promptStub = jest.spyOn(inquirer, 'prompt').mockResolvedValue({ scriptName: 'test' });
     
     // Mock child_process.spawn
-    spawnStub = sinon.stub(child_process, 'spawn');
-    spawnStub.returns({
-      on: sinon.stub().yields(0) // Simulate successful exit
-    });
+    spawnStub = jest.spyOn(child_process, 'spawn').mockImplementation(() => ({
+      on: (event, callback) => callback(0) // Simulate successful exit
+    }));
     
     // Mock process.exit
-    processExitStub = sinon.stub(process, 'exit');
+    processExitStub = jest.spyOn(process, 'exit').mockImplementation(() => {});
     
     // Mock console methods
-    consoleLogStub = sinon.stub(console, 'log');
+    consoleLogStub = jest.spyOn(console, 'log').mockImplementation(() => {});
   });
 
   afterEach(() => {
     // Restore mocks
-    promptStub.restore();
-    spawnStub.restore();
-    processExitStub.restore();
-    consoleLogStub.restore();
+    jest.restoreAllMocks();
     mockFs.restore();
     
     // Restore original process.cwd
@@ -61,9 +57,6 @@ describe('Prompt Interaction', () => {
     // Mock process.cwd to return our test directory
     process.cwd = () => '/test-dir';
     
-    // Mock user selecting "test" script
-    promptStub.resolves({ scriptName: 'test' });
-    
     // Import the index module (this will execute it)
     try {
       await import('../../index.mjs');
@@ -72,8 +65,8 @@ describe('Prompt Interaction', () => {
     }
     
     // Verify the prompt was shown with correct options
-    expect(promptStub.called).toBe(true);
-    const promptArgs = promptStub.firstCall.args[0];
+    expect(promptStub).toHaveBeenCalled();
+    const promptArgs = promptStub.mock.calls[0][0];
     expect(promptArgs).toBeInstanceOf(Array);
     expect(promptArgs[0].type).toBe('autocomplete');
     expect(promptArgs[0].name).toBe('scriptName');
@@ -87,11 +80,11 @@ describe('Prompt Interaction', () => {
     expect(filteredScripts).toEqual(['dev']);
     
     // Verify npm run was called with the selected script
-    expect(consoleLogStub.calledWith('Running: npm run test')).toBe(true);
-    expect(spawnStub.calledWith('npm', ['run', 'test'], { stdio: 'inherit', shell: true })).toBe(true);
+    expect(consoleLogStub).toHaveBeenCalledWith('Running: npm run test');
+    expect(spawnStub).toHaveBeenCalledWith('npm', ['run', 'test'], { stdio: 'inherit', shell: true });
     
     // Verify process.exit was called with the exit code from the child process
-    expect(processExitStub.calledWith(0)).toBe(true);
+    expect(processExitStub).toHaveBeenCalledWith(0);
   });
 
   it('should handle errors during script execution', async () => {
@@ -106,12 +99,12 @@ describe('Prompt Interaction', () => {
     process.cwd = () => '/test-dir';
     
     // Mock user selecting "build" script
-    promptStub.resolves({ scriptName: 'build' });
+    promptStub.mockResolvedValue({ scriptName: 'build' });
     
     // Mock spawn to simulate an error during execution
-    spawnStub.returns({
-      on: sinon.stub().yields(1) // Simulate error exit code
-    });
+    spawnStub.mockImplementation(() => ({
+      on: (event, callback) => callback(1) // Simulate error exit code
+    }));
     
     // Import the index module (this will execute it)
     try {
@@ -121,10 +114,10 @@ describe('Prompt Interaction', () => {
     }
     
     // Verify npm run was called with the selected script
-    expect(consoleLogStub.calledWith('Running: npm run build')).toBe(true);
-    expect(spawnStub.calledWith('npm', ['run', 'build'], { stdio: 'inherit', shell: true })).toBe(true);
+    expect(consoleLogStub).toHaveBeenCalledWith('Running: npm run build');
+    expect(spawnStub).toHaveBeenCalledWith('npm', ['run', 'build'], { stdio: 'inherit', shell: true });
     
     // Verify process.exit was called with the error code from the child process
-    expect(processExitStub.calledWith(1)).toBe(true);
+    expect(processExitStub).toHaveBeenCalledWith(1);
   });
 });
