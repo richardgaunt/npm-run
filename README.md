@@ -79,7 +79,7 @@ MIT
 
 ## Testing
 
-The npm-runner tool includes a comprehensive test suite:
+The npm-runner tool includes a comprehensive test suite using Jest:
 
 ```shell script
 # Install dev dependencies
@@ -89,12 +89,13 @@ npm install
 npm test
 
 # Run specific test files
-npx mocha tests/unit/package-parser.test.js
+node --experimental-vm-modules node_modules/jest/bin/jest.js tests/unit/package-parser.test.js
 ```
 
 The test suite includes:
 - Unit tests for package.json parsing and script filtering
 - Integration tests for script execution and user interaction
+- Test coverage reports
 
 ## Troubleshooting
 

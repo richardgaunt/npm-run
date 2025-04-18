@@ -1,5 +1,3 @@
-import { describe, it, beforeEach, afterEach } from 'mocha';
-import { expect } from 'chai';
 import sinon from 'sinon';
 import mockFs from 'mock-fs';
 import path from 'path';
@@ -74,26 +72,26 @@ describe('Prompt Interaction', () => {
     }
     
     // Verify the prompt was shown with correct options
-    expect(promptStub.called).to.be.true;
+    expect(promptStub.called).toBe(true);
     const promptArgs = promptStub.firstCall.args[0];
-    expect(promptArgs).to.be.an('array');
-    expect(promptArgs[0].type).to.equal('autocomplete');
-    expect(promptArgs[0].name).to.equal('scriptName');
+    expect(promptArgs).toBeInstanceOf(Array);
+    expect(promptArgs[0].type).toBe('autocomplete');
+    expect(promptArgs[0].name).toBe('scriptName');
     
     // Test the source function from the prompt
     const sourceFunction = promptArgs[0].source;
     const allScripts = await sourceFunction({}, '');
-    expect(allScripts).to.include.members(['start', 'test', 'build', 'dev', 'lint']);
+    expect(allScripts).toEqual(expect.arrayContaining(['start', 'test', 'build', 'dev', 'lint']));
     
     const filteredScripts = await sourceFunction({}, 'de');
-    expect(filteredScripts).to.deep.equal(['dev']);
+    expect(filteredScripts).toEqual(['dev']);
     
     // Verify npm run was called with the selected script
-    expect(consoleLogStub.calledWith('Running: npm run test')).to.be.true;
-    expect(spawnStub.calledWith('npm', ['run', 'test'], { stdio: 'inherit', shell: true })).to.be.true;
+    expect(consoleLogStub.calledWith('Running: npm run test')).toBe(true);
+    expect(spawnStub.calledWith('npm', ['run', 'test'], { stdio: 'inherit', shell: true })).toBe(true);
     
     // Verify process.exit was called with the exit code from the child process
-    expect(processExitStub.calledWith(0)).to.be.true;
+    expect(processExitStub.calledWith(0)).toBe(true);
   });
 
   it('should handle errors during script execution', async () => {
@@ -123,10 +121,10 @@ describe('Prompt Interaction', () => {
     }
     
     // Verify npm run was called with the selected script
-    expect(consoleLogStub.calledWith('Running: npm run build')).to.be.true;
-    expect(spawnStub.calledWith('npm', ['run', 'build'], { stdio: 'inherit', shell: true })).to.be.true;
+    expect(consoleLogStub.calledWith('Running: npm run build')).toBe(true);
+    expect(spawnStub.calledWith('npm', ['run', 'build'], { stdio: 'inherit', shell: true })).toBe(true);
     
     // Verify process.exit was called with the error code from the child process
-    expect(processExitStub.calledWith(1)).to.be.true;
+    expect(processExitStub.calledWith(1)).toBe(true);
   });
 });

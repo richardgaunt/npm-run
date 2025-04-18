@@ -1,6 +1,3 @@
-import { describe, it } from 'mocha';
-import { expect } from 'chai';
-
 // Function to test - extracted from index.mjs
 function filterScriptNames(scriptNames, input) {
   if (!input) {
@@ -16,24 +13,24 @@ describe('Autocomplete Filter', () => {
   const scriptNames = ['start', 'test', 'build', 'dev', 'lint', 'deploy'];
 
   it('should return all script names when input is falsy', () => {
-    expect(filterScriptNames(scriptNames, '')).to.deep.equal(scriptNames);
-    expect(filterScriptNames(scriptNames, null)).to.deep.equal(scriptNames);
-    expect(filterScriptNames(scriptNames, undefined)).to.deep.equal(scriptNames);
+    expect(filterScriptNames(scriptNames, '')).toEqual(scriptNames);
+    expect(filterScriptNames(scriptNames, null)).toEqual(scriptNames);
+    expect(filterScriptNames(scriptNames, undefined)).toEqual(scriptNames);
   });
 
   it('should filter script names based on input string', () => {
-    expect(filterScriptNames(scriptNames, 'de')).to.deep.equal(['dev', 'deploy']);
-    expect(filterScriptNames(scriptNames, 'st')).to.deep.equal(['start', 'test']);
-    expect(filterScriptNames(scriptNames, 'build')).to.deep.equal(['build']);
+    expect(filterScriptNames(scriptNames, 'de')).toEqual(['dev', 'deploy']);
+    expect(filterScriptNames(scriptNames, 'st')).toEqual(['start', 'test']);
+    expect(filterScriptNames(scriptNames, 'build')).toEqual(['build']);
   });
 
   it('should be case insensitive', () => {
-    expect(filterScriptNames(scriptNames, 'DE')).to.deep.equal(['dev', 'deploy']);
-    expect(filterScriptNames(scriptNames, 'Test')).to.deep.equal(['test']);
+    expect(filterScriptNames(scriptNames, 'DE')).toEqual(['dev', 'deploy']);
+    expect(filterScriptNames(scriptNames, 'Test')).toEqual(['test']);
   });
 
   it('should return empty array when no matches found', () => {
-    expect(filterScriptNames(scriptNames, 'xyz')).to.deep.equal([]);
-    expect(filterScriptNames(scriptNames, '123')).to.deep.equal([]);
+    expect(filterScriptNames(scriptNames, 'xyz')).toEqual([]);
+    expect(filterScriptNames(scriptNames, '123')).toEqual([]);
   });
 });

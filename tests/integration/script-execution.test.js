@@ -1,5 +1,3 @@
-import { describe, it, beforeEach, afterEach } from 'mocha';
-import { expect } from 'chai';
 import sinon from 'sinon';
 import mockFs from 'mock-fs';
 import path from 'path';
@@ -65,8 +63,8 @@ describe('Script Execution Integration', () => {
       // Expected to fail since we're in test environment
     }
     
-    expect(consoleErrorStub.calledWith('Error: No package.json found in the current directory.')).to.be.true;
-    expect(processExitStub.calledWith(1)).to.be.true;
+    expect(consoleErrorStub.calledWith('Error: No package.json found in the current directory.')).toBe(true);
+    expect(processExitStub.calledWith(1)).toBe(true);
   });
 
   it('should exit with error when package.json is invalid', async () => {
@@ -87,8 +85,8 @@ describe('Script Execution Integration', () => {
       // Expected to fail since we're in test environment
     }
     
-    expect(consoleErrorStub.calledWithMatch('Error parsing package.json:')).to.be.true;
-    expect(processExitStub.calledWith(1)).to.be.true;
+    expect(consoleErrorStub.calledWithMatch('Error parsing package.json:')).toBe(true);
+    expect(processExitStub.calledWith(1)).toBe(true);
   });
 
   it('should exit with message when no scripts are found', async () => {
@@ -109,8 +107,8 @@ describe('Script Execution Integration', () => {
       // Expected to fail since we're in test environment
     }
     
-    expect(consoleLogStub.calledWith('No scripts found in package.json.')).to.be.true;
-    expect(processExitStub.calledWith(0)).to.be.true;
+    expect(consoleLogStub.calledWith('No scripts found in package.json.')).toBe(true);
+    expect(processExitStub.calledWith(0)).toBe(true);
   });
 
   // Note: Testing the inquirer prompt functionality would require more complex mocking,

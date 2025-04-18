@@ -1,5 +1,3 @@
-import { describe, it, beforeEach, afterEach } from 'mocha';
-import { expect } from 'chai';
 import mockFs from 'mock-fs';
 import fs from 'fs';
 import path from 'path';
@@ -42,9 +40,9 @@ describe('Package Parser', () => {
       });
 
       const result = loadPackageJson('/test-dir/package.json');
-      expect(result).to.be.an('object');
-      expect(result.name).to.equal('test-package');
-      expect(result.scripts).to.be.an('object');
+      expect(result).toBeInstanceOf(Object);
+      expect(result.name).toBe('test-package');
+      expect(result.scripts).toBeInstanceOf(Object);
     });
 
     it('should throw an error if package.json does not exist', () => {
@@ -52,7 +50,7 @@ describe('Package Parser', () => {
         '/test-dir': {}
       });
 
-      expect(() => loadPackageJson('/test-dir/package.json')).to.throw('No package.json found');
+      expect(() => loadPackageJson('/test-dir/package.json')).toThrow('No package.json found');
     });
 
     it('should throw an error if package.json is invalid JSON', () => {
@@ -62,7 +60,7 @@ describe('Package Parser', () => {
         }
       });
 
-      expect(() => loadPackageJson('/test-dir/package.json')).to.throw('Error parsing package.json');
+      expect(() => loadPackageJson('/test-dir/package.json')).toThrow('Error parsing package.json');
     });
   });
 
@@ -71,26 +69,26 @@ describe('Package Parser', () => {
       const packageJson = JSON.parse(fs.readFileSync(path.join(fixturesPath, 'validPackage.json')));
       const scripts = extractScripts(packageJson);
       
-      expect(scripts).to.be.an('object');
-      expect(Object.keys(scripts)).to.have.lengthOf(5);
-      expect(scripts.start).to.equal('node server.js');
-      expect(scripts.test).to.equal('jest');
+      expect(scripts).toBeInstanceOf(Object);
+      expect(Object.keys(scripts)).toHaveLength(5);
+      expect(scripts.start).toBe('node server.js');
+      expect(scripts.test).toBe('jest');
     });
 
     it('should return an empty object when scripts section is empty', () => {
       const packageJson = JSON.parse(fs.readFileSync(path.join(fixturesPath, 'emptyScripts.json')));
       const scripts = extractScripts(packageJson);
       
-      expect(scripts).to.be.an('object');
-      expect(Object.keys(scripts)).to.have.lengthOf(0);
+      expect(scripts).toBeInstanceOf(Object);
+      expect(Object.keys(scripts)).toHaveLength(0);
     });
 
     it('should return an empty object when scripts section is missing', () => {
       const packageJson = JSON.parse(fs.readFileSync(path.join(fixturesPath, 'noScripts.json')));
       const scripts = extractScripts(packageJson);
       
-      expect(scripts).to.be.an('object');
-      expect(Object.keys(scripts)).to.have.lengthOf(0);
+      expect(scripts).toBeInstanceOf(Object);
+      expect(Object.keys(scripts)).toHaveLength(0);
     });
   });
 });

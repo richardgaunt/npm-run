@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Global install: `npm install -g .`
 - Make executable: `chmod +x index.mjs`
 - Run tests: `npm test`
-- Run specific test: `npx mocha tests/unit/package-parser.test.js`
+- Run specific test: `node --experimental-vm-modules node_modules/jest/bin/jest.js tests/unit/package-parser.test.js`
 
 ## Code Style Guidelines
 - **File Format**: JavaScript ES Modules (.mjs)
@@ -22,7 +22,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Interactivity**: Use inquirer.js for interactive prompts with consistent styling
 
 ## Testing Guidelines
-- **Test Framework**: Mocha with Chai assertions
+- **Test Framework**: Jest (with ES Modules support)
 - **Mocking**: Use sinon for stubs and spies, mock-fs for filesystem
 - **Unit Tests**: Focus on individual functions in isolation
 - **Integration Tests**: Test interaction between components
