@@ -8,7 +8,10 @@
     "lint": "eslint . --ext .mjs",
     "lint:fix": "eslint . --ext .mjs --fix",
     "lint:report": "eslint . --ext .mjs -f json -o eslint-report.json",
-    "test": "cross-env NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js"
+    "test": "cross-env NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:unit": "cross-env NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js tests/unit",
+    "test:integration": "cross-env NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js tests/integration/simple.test.js",
+    "test:all": "cross-env NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "bin": {
     "npm-run": "index.mjs"
