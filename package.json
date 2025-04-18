@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "commander": "^13.1.0",
-    "inquirer": "^9.3.7",
+    "inquirer": "^12.5.2",
     "inquirer-autocomplete-prompt": "^3.0.1"
   },
   "devDependencies": {
