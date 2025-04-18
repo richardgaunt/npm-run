@@ -2,6 +2,9 @@
 
 An interactive CLI tool for running npm scripts from your `package.json` files with autocomplete functionality.
 
+[![Tests](https://github.com/richardgaunt/npm-runner/actions/workflows/tests.yml/badge.svg)](https://github.com/richardgaunt/git-manager/actions/workflows/tests.yml)
+[![Linting](https://github.com/richardgaunt/npm-runner/actions/workflows/lint.yml/badge.svg)](https://github.com/richardgaunt/git-manager/actions/workflows/lint.yml)
+
 ## Features
 
 - ✅ Interactive selection of npm scripts
