@@ -77,6 +77,25 @@ Press Enter to run the selected script. The tool will execute the script and exi
 
 MIT
 
+## Testing
+
+The npm-runner tool includes a comprehensive test suite:
+
+```shell script
+# Install dev dependencies
+npm install
+
+# Run all tests
+npm test
+
+# Run specific test files
+npx mocha tests/unit/package-parser.test.js
+```
+
+The test suite includes:
+- Unit tests for package.json parsing and script filtering
+- Integration tests for script execution and user interaction
+
 ## Troubleshooting
 
 **Command not found: npm_run**

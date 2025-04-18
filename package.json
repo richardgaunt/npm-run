@@ -6,12 +6,22 @@
   "bin": {
     "npm-run": "index.mjs"
   },
+  "scripts": {
+    "test": "mocha tests/**/*.test.js"
+  },
   "dependencies": {
     "inquirer": "^8.2.4",
     "inquirer-autocomplete-prompt": "^2.0.0",
     "commander": "^9.3.0"
   },
+  "devDependencies": {
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
+    "mock-fs": "^5.2.0",
+    "sinon": "^15.1.0"
+  },
   "keywords": ["npm", "scripts", "cli", "runner"],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "type": "module"
 }

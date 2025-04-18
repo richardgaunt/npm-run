@@ -1,0 +1,6 @@
+{
+  "name": "empty-scripts",
+  "version": "1.0.0",
+  "description": "Package with empty scripts section",
+  "scripts": {}
+}
