@@ -77,6 +77,26 @@ Press Enter to run the selected script. The tool will execute the script and exi
 
 MIT
 
+## Testing
+
+The npm-runner tool includes a comprehensive test suite using Jest:
+
+```shell script
+# Install dev dependencies
+npm install
+
+# Run all tests
+npm test
+
+# Run specific test files
+node --experimental-vm-modules node_modules/jest/bin/jest.js tests/unit/package-parser.test.js
+```
+
+The test suite includes:
+- Unit tests for package.json parsing and script filtering
+
+**Note**: Integration tests are currently limited due to challenges with mocking ES modules in the test environment. Unit tests provide coverage for the core functionality.
+
 ## Troubleshooting
 
 **Command not found: npm_run**

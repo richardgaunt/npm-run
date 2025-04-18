@@ -1,0 +1,12 @@
+{
+  "name": "test-package",
+  "version": "1.0.0",
+  "description": "Test package.json for npm-runner tests",
+  "scripts": {
+    "start": "node server.js",
+    "test": "jest",
+    "build": "webpack",
+    "dev": "webpack serve",
+    "lint": "eslint ."
+  }
+}
