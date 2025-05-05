@@ -21,7 +21,7 @@
     "inquirer-autocomplete-prompt": "^3.0.1"
   },
   "devDependencies": {
-    "@eslint/js": "^9.25.1",
+    "@eslint/js": "^9.26.0",
     "@jest/globals": "^29.5.0",
     "cross-env": "^7.0.3",
     "eslint": "^9.25.1",
