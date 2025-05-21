@@ -9,7 +9,11 @@ import { spawn } from 'child_process';
 program
   .version('1.0.0')
   .description('Interactive CLI to run npm scripts from package.json')
+  .arguments('[script]')
   .parse(process.argv);
+
+// Get script name from command line arguments if provided
+const providedScript = program.args[0] ?? '';
 
 // Check if package.json exists in the current directory
 const packageJsonPath = path.join(process.cwd(), 'package.json');
@@ -37,24 +41,46 @@ if (scriptNames.length === 0) {
   process.exit(0);
 }
 
+/**
+ * Execute the specified npm script
+ * @param {string} scriptName - The name of the script to run
+ */
+function executeScript(scriptName) {
+  const command = `npm run ${scriptName}`;
+  console.log(`Running: ${command}`);
+
+  const child = spawn('npm', ['run', scriptName], {
+    stdio: 'inherit',
+    shell: true
+  });
+
+  child.on('close', code => {
+    process.exit(code);
+  });
+}
+
+/**
+ * Filter script names based on input
+ * @param {string} input - The filter text
+ * @param {string[]} names - List of script names
+ * @returns {Array} Filtered list of choices
+ */
+function filterScriptNames(input = '', names) {
+  const normalizedInput = input.toLowerCase();
+  return names
+    .filter(name => name.toLowerCase().includes(normalizedInput))
+    .map(name => ({ value: name, name }));
+}
+
 async function main() {
   try {
     const scriptName = await search({
       message: 'Select a script to run:',
-      source: (input = '') => scriptNames.map(name => ({ value: name, name })).filter(choice => choice.name.toLowerCase().includes(input.toLowerCase())),
+      source: (input = providedScript) => { return filterScriptNames(input, scriptNames); },
+      initialValue: providedScript
     });
 
-    const command = `npm run ${scriptName}`;
-    console.log(`Running: ${command}`);
-
-    const child = spawn('npm', ['run', scriptName], {
-      stdio: 'inherit',
-      shell: true
-    });
-
-    child.on('close', code => {
-      process.exit(code);
-    });
+    executeScript(scriptName);
   } catch (error) {
     console.error('Error:', error);
     process.exit(1);

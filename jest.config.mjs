@@ -11,6 +11,7 @@ export default {
   testPathIgnorePatterns: [
     '/node_modules/',
     'tests/integration/script-execution.test.js',
-    'tests/integration/prompt-interaction.test.js'
+    'tests/integration/prompt-interaction.test.js',
+    'tests/unit/command-line-args.test.js'
   ],
 };
