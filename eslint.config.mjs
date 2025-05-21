@@ -28,7 +28,8 @@ export default [
       'dist/',
       'build/',
       '**/*.min.js',
-      'jest.config.mjs'
+      'jest.config.mjs',
+      'tests/',
     ]
   },
 

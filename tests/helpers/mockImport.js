@@ -12,7 +12,7 @@ import fs from 'fs';
 export async function importIndexModule() {
   // Clear require cache for the module
   const modulePath = path.resolve(process.cwd(), 'index.mjs');
-  
+
   try {
     // Import the module
     const importedModule = await import('../../index.mjs');

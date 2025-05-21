@@ -14,7 +14,7 @@ function loadPackageJson(packageJsonPath) {
   if (!fs.existsSync(packageJsonPath)) {
     throw new Error('No package.json found');
   }
-  
+
   try {
     return JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
   } catch (error) {
@@ -69,7 +69,7 @@ describe('Package Parser', () => {
     it('should extract scripts from a valid package.json', () => {
       const packageJson = JSON.parse(fs.readFileSync(path.join(fixturesPath, 'validPackage.json')));
       const scripts = extractScripts(packageJson);
-      
+
       expect(scripts).toBeInstanceOf(Object);
       expect(Object.keys(scripts)).toHaveLength(5);
       expect(scripts.start).toBe('node server.js');
@@ -79,7 +79,7 @@ describe('Package Parser', () => {
     it('should return an empty object when scripts section is empty', () => {
       const packageJson = JSON.parse(fs.readFileSync(path.join(fixturesPath, 'emptyScripts.json')));
       const scripts = extractScripts(packageJson);
-      
+
       expect(scripts).toBeInstanceOf(Object);
       expect(Object.keys(scripts)).toHaveLength(0);
     });
@@ -87,7 +87,7 @@ describe('Package Parser', () => {
     it('should return an empty object when scripts section is missing', () => {
       const packageJson = JSON.parse(fs.readFileSync(path.join(fixturesPath, 'noScripts.json')));
       const scripts = extractScripts(packageJson);
-      
+
       expect(scripts).toBeInstanceOf(Object);
       expect(Object.keys(scripts)).toHaveLength(0);
     });

@@ -2,13 +2,9 @@
 
 import fs from 'fs';
 import path from 'path';
-import inquirer from 'inquirer';
-import autocomplete from 'inquirer-autocomplete-prompt';
+import { search } from '@inquirer/prompts';
 import { program } from 'commander';
 import { spawn } from 'child_process';
-
-// Register the autocomplete prompt
-inquirer.registerPrompt('autocomplete', autocomplete);
 
 program
   .version('1.0.0')
@@ -41,29 +37,16 @@ if (scriptNames.length === 0) {
   process.exit(0);
 }
 
-inquirer
-  .prompt([
-    {
-      type: 'autocomplete',
-      name: 'scriptName',
+async function main() {
+  try {
+    const scriptName = await search({
       message: 'Select a script to run:',
-      source: (answersSoFar, input) => {
-        input = input || false;
-        if (!input) {
-          return Promise.resolve(scriptNames);
-        }
-        const filtered = scriptNames.filter(name =>
-          name.toLowerCase().includes(input.toLowerCase())
-        );
-        return Promise.resolve(filtered);
-      }
-    }
-  ])
-  .then(answers => {
-    const { scriptName } = answers;
-    const command = `npm run ${scriptName}`;
+      source: (input = '') => scriptNames.map(name => ({ value: name, name })).filter(choice => choice.name.toLowerCase().includes(input.toLowerCase())),
+    });
 
+    const command = `npm run ${scriptName}`;
     console.log(`Running: ${command}`);
+
     const child = spawn('npm', ['run', scriptName], {
       stdio: 'inherit',
       shell: true
@@ -72,8 +55,10 @@ inquirer
     child.on('close', code => {
       process.exit(code);
     });
-  })
-  .catch(error => {
+  } catch (error) {
     console.error('Error:', error);
     process.exit(1);
-  });
+  }
+}
+
+main();
