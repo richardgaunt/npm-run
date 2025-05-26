@@ -16,7 +16,7 @@
     "npm-run": "index.mjs"
   },
   "dependencies": {
-    "@inquirer/prompts": "^7.5.1",
+    "@inquirer/prompts": "^7.5.3",
     "commander": "^13.1.0"
   },
   "devDependencies": {
